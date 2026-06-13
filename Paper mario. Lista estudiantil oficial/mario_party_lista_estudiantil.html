@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista Mario Party - Propuesta Electoral Profesional Pastel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+        .liquid-glass {
+            background: rgba(255, 255, 255, 0.55);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid rgba(255, 255, 255, 0.75);
+            box-shadow: 0 8px 20px -8px rgba(148, 163, 184, 0.06);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .liquid-glass-dark {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1.5px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 25px 50px -20px rgba(15, 23, 42, 0.3);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .btn-smooth {
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .btn-smooth:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 18px 30px -5px rgba(15, 23, 42, 0.15);
+        }
+        .btn-smooth:active {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px -3px rgba(15, 23, 42, 0.08);
+        }
+
+        .filter-button {
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            background: rgba(255, 255, 255, 0.88);
+            color: #334155;
+            padding: 0.6rem 0.9rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            border-radius: 9999px;
+            transition: all 220ms ease;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .filter-button:hover {
+            background: #f8fafc;
+            transform: translateY(-1px);
+            border-color: rgba(148, 163, 184, 0.5);
+        }
+        .filter-button.active {
+            background: #0f172a;
+            color: white;
+            border-color: rgba(15, 23, 42, 0.35);
+        }
+
+        .proposal-card {
+            background: rgba(255,255,255,0.92);
+            border: 1px solid rgba(148,163,184,0.18);
+            border-radius: 1.75rem;
+            padding: 1rem 1.1rem;
+            box-shadow: 0 12px 28px -18px rgba(15,23,42,0.12);
+        }
+        .proposal-card h5 { font-size: 1rem; }
+        .proposal-card p {
+            margin-top: 0.45rem;
+            color: #475569;
+            line-height: 1.6;
+        }
+        .area-ambiente { background: linear-gradient(135deg, rgba(236,249,235,0.95), rgba(220,252,231,0.95)); border-color: rgba(16,185,129,0.18); }
+        .area-arte { background: linear-gradient(135deg, rgba(253,242,248,0.95), rgba(248,207,232,0.95)); border-color: rgba(219,39,119,0.18); }
+        .area-deporte { background: linear-gradient(135deg, rgba(229,246,252,0.95), rgba(207,250,254,0.95)); border-color: rgba(6,182,212,0.18); }
+        .area-coordinacion { background: linear-gradient(135deg, rgba(248,250,252,0.95), rgba(241,245,249,0.95)); border-color: rgba(100,116,139,0.18); }
+        .area-salud { background: linear-gradient(135deg, rgba(254,242,242,0.95), rgba(254,226,226,0.95)); border-color: rgba(244,63,94,0.18); }
+        .area-educacion { background: linear-gradient(135deg, rgba(237,242,255,0.95), rgba(224,231,255,0.95)); border-color: rgba(79,70,229,0.18); }
+        .area-campana { background: linear-gradient(135deg, rgba(238,246,255,0.95), rgba(224,242,254,0.95)); border-color: rgba(14,165,233,0.18); }
+
+        .more-button {
+            margin-top: 1.25rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(148,163,184,0.35);
+            background: rgba(255,255,255,0.95);
+            font-size: 0.8rem;
+            font-weight: 800;
+            color: #334155;
+            transition: all 220ms ease;
+            cursor: pointer;
+        }
+        .more-button:hover { transform: translateY(-1px); background: #f8fafc; }
+
+        @keyframes ambient-glow {
+            0%, 100% { transform: translate(0px, 0px) scale(1); filter: blur(90px); }
+            50% { transform: translate(50px, -40px) scale(1.1); filter: blur(110px); }
+        }
+        .animate-light-1 { animation: ambient-glow 24s ease-in-out infinite; }
+        .animate-light-2 { animation: ambient-glow 30s ease-in-out infinite 3s; }
+        .animate-light-3 { animation: ambient-glow 26s ease-in-out infinite 6s; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.8s ease-out forwards; }
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+
+        .mascot-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.94), rgba(248,250,252,0.9));
+            border: 1px solid rgba(251,146,60,0.18);
+            box-shadow: 0 8px 18px -12px rgba(251,146,60,0.06);
+        }
+
+        /* Candidate cards */
+        .candidate-avatar { display:flex; align-items:center; justify-content:center; width:100%; background:transparent; padding:0; }
+        .candidate-img {
+            width: auto;
+            height: auto;
+            max-height: 100px;
+            object-fit: contain;
+            transition: transform 260ms cubic-bezier(.2,.9,.2,1), filter 260ms ease;
+            filter: drop-shadow(0 6px 12px rgba(15,23,42,0.06));
+        }
+        .candidate-card { padding-bottom: 1.25rem; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .candidate-card:hover { transform: translateY(-6px); box-shadow: 0 8px 20px -8px rgba(15,23,42,0.06); }
+        .candidate-card:hover .candidate-img { transform: scale(1.04) translateY(-4%); filter: drop-shadow(0 10px 20px rgba(15,23,42,0.06)); }
+        .role-badge { transition: transform 220ms ease, box-shadow 220ms ease; font-size: 0.72rem; padding-left: 0.6rem; padding-right: 0.6rem; }
+        .candidate-card:hover .role-badge { transform: translateY(-2px); box-shadow: 0 10px 22px -8px rgba(99,102,241,0.12); }
+
+        @media (min-width: 640px) {
+            .candidate-img { max-height: 120px; }
+        }
+        @media (min-width: 1024px) {
+            .candidate-img { max-height: 150px; }
+        }
+
+        /* Mobile menu */
+        #mobile-menu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+            opacity: 0;
+        }
+        #mobile-menu.open {
+            max-height: 300px;
+            opacity: 1;
+        }
+
+        /* Filter scroll on mobile */
+        .filter-scroll {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .filter-scroll::-webkit-scrollbar { display: none; }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .animate-light-1, .animate-light-2, .animate-light-3 { animation: none; }
+            .animate-fade-in-up { animation: none; opacity: 1; }
+            .btn-smooth:hover { transform: none; }
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-[#fafafd] text-slate-800 font-sans selection:bg-rose-200 selection:text-rose-950 relative overflow-x-hidden">
+
+    <!-- LUCES DINÁMICAS DE FONDO -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-[#fafafd]">
+        <div class="absolute top-[-10%] left-[-10%] w-[75vw] h-[75vw] rounded-full bg-[#fca5a5]/50 mix-blend-multiply animate-light-1"></div>
+        <div class="absolute top-[20%] right-[-10%] w-[70vw] h-[70vw] rounded-full bg-[#93c5fd]/50 mix-blend-multiply animate-light-2"></div>
+        <div class="absolute bottom-[-10%] left-[5%] w-[65vw] h-[65vw] rounded-full bg-[#fef08a]/55 mix-blend-multiply animate-light-3"></div>
+    </div>
+
+    <!-- NAVEGACIÓN -->
+    <header class="sticky top-3 z-50 mx-auto max-w-6xl px-3 sm:px-4">
+        <div class="liquid-glass rounded-2xl px-4 sm:px-6 py-3 sm:py-4 shadow-md">
+            <!-- Desktop nav -->
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="bg-gradient-to-tr from-amber-200 to-yellow-100 p-2 sm:p-2.5 rounded-xl text-amber-800 shadow-[0_4px_12px_rgba(251,191,36,0.15)] border border-amber-300/30 hover:rotate-12 transition-transform duration-300 flex-shrink-0">
+                        <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.191-5.934 5.787 1.4 8.168L12 18.896l-7.334 3.857 1.4-8.168L.132 9.209l8.2-1.191L12 .587z"/></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-base sm:text-xl font-extrabold tracking-tight bg-gradient-to-r from-rose-600 via-indigo-950 to-slate-900 bg-clip-text text-transparent">
+                            MARIO PARTY
+                        </h1>
+                        <span class="block text-[9px] sm:text-xs font-extrabold text-indigo-900/60 uppercase tracking-widest -mt-0.5">Lista Estudiantil 2026-2027</span>
+                    </div>
+                </div>
+
+                <!-- Desktop links -->
+                <nav class="hidden md:flex items-center gap-6 lg:gap-8">
+                    <a href="#inicio" class="text-sm font-bold text-slate-800 hover:text-rose-600 transition-colors duration-300">Inicio</a>
+                    <a href="#candidatos" class="text-sm font-bold text-slate-800 hover:text-rose-600 transition-colors duration-300">Candidatos</a>
+                    <a href="#propuestas" class="text-sm font-bold text-slate-800 hover:text-rose-600 transition-colors duration-300">Propuestas</a>
+                    <a href="#contacto" class="text-sm font-bold text-slate-800 hover:text-rose-600 transition-colors duration-300">Contáctanos</a>
+                </nav>
+
+                <!-- Hamburger button (mobile only) -->
+                <button id="menu-toggle" aria-label="Abrir menú" class="md:hidden flex flex-col justify-center items-center w-9 h-9 gap-1.5 rounded-xl hover:bg-slate-100 transition-colors">
+                    <span class="ham-line block w-5 h-0.5 bg-slate-800 rounded transition-all duration-300"></span>
+                    <span class="ham-line block w-5 h-0.5 bg-slate-800 rounded transition-all duration-300"></span>
+                    <span class="ham-line block w-5 h-0.5 bg-slate-800 rounded transition-all duration-300"></span>
+                </button>
+            </div>
+
+            <!-- Mobile menu dropdown -->
+            <div id="mobile-menu" class="md:hidden">
+                <nav class="flex flex-col gap-1 pt-3 pb-1 border-t border-slate-200/60 mt-3">
+                    <a href="#inicio" class="mobile-nav-link px-3 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-rose-50 hover:text-rose-600 transition-all">Inicio</a>
+                    <a href="#candidatos" class="mobile-nav-link px-3 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-rose-50 hover:text-rose-600 transition-all">Candidatos</a>
+                    <a href="#propuestas" class="mobile-nav-link px-3 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-rose-50 hover:text-rose-600 transition-all">Propuestas</a>
+                    <a href="#contacto" class="mobile-nav-link px-3 py-2.5 rounded-xl text-sm font-bold text-slate-800 hover:bg-rose-50 hover:text-rose-600 transition-all">Contáctanos</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section id="inicio" class="max-w-6xl mx-auto px-4 pt-10 sm:pt-16 pb-16 sm:pb-20 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+
+            <div class="lg:col-span-7 text-left space-y-5 sm:space-y-6 animate-fade-in-up">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-extrabold bg-rose-100 text-rose-850 border border-rose-200 shadow-[0_4px_12px_-2px_rgba(244,63,94,0.12)]">
+                    <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                    Tu voz, nuestro motor
+                </span>
+
+                <h2 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-slate-800 leading-none">
+                    Liderazgo que integra,<br>
+                    <span class="bg-gradient-to-r from-rose-400 via-rose-500 to-blue-400 bg-clip-text text-transparent">propuestas que suman</span>.
+                </h2>
+
+                <!-- Mobile: mascot above text on small screens -->
+                <div class="flex justify-center lg:hidden">
+                    <img src="clipart211898.png" alt="Paper Mario mascota de la lista" class="w-36 sm:w-48 h-auto object-contain drop-shadow-xl" />
+                </div>
+
+                <p class="text-sm sm:text-base lg:text-lg text-slate-700 font-semibold leading-relaxed">
+                    Creemos en un consejo estudiantil participativo y moderno. Te presentamos un plan de trabajo balanceado, saludable y pensado para potenciar el talento de cada estudiante en nuestra institución.
+                </p>
+
+                <div class="flex flex-col xs:flex-row gap-3 sm:gap-4 pt-1">
+                    <a href="#propuestas" class="btn-smooth px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-rose-500 to-rose-400 hover:from-rose-400 hover:to-rose-300 text-white font-extrabold text-sm rounded-xl flex items-center justify-center gap-2 shadow-[0_12px_24px_-8px_rgba(244,63,94,0.5)]">
+                        Ver Propuestas <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                    <a href="#contacto" class="btn-smooth px-6 sm:px-8 py-3 sm:py-4 liquid-glass text-slate-800 font-extrabold text-sm rounded-xl hover:bg-white/90 flex items-center justify-center gap-2 shadow-[0_12px_24px_-8px_rgba(148,163,184,0.2)]">
+                        Contáctanos
+                    </a>
+                </div>
+            </div>
+
+            <!-- Panel de Control -->
+            <div class="lg:col-span-5 flex justify-center lg:justify-end animate-fade-in-up delay-100">
+                <div class="relative w-full max-w-sm sm:max-w-md">
+                    <div class="w-full liquid-glass rounded-3xl p-5 sm:p-6 shadow-[0_20px_45px_-15px_rgba(100,116,139,0.2)] hover:shadow-[0_30px_60px_-15px_rgba(100,116,139,0.3)] hover:translate-y-[-4px] relative overflow-hidden flex flex-col gap-4 sm:gap-6">
+                        <div class="flex justify-between items-center pb-3 sm:pb-4 border-b border-slate-200">
+                            <div class="flex items-center gap-2">
+                                <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+                                <span class="w-3 h-3 rounded-full bg-blue-400"></span>
+                                <span class="w-3 h-3 rounded-full bg-amber-300"></span>
+                            </div>
+                            <span class="text-xs font-extrabold text-slate-700 uppercase tracking-widest">Nuestro Plan</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="bg-white/85 border border-white p-3 sm:p-4 rounded-2xl flex items-center gap-3 shadow-sm">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-rose-100 text-rose-600 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0">🏫</div>
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800">7 Áreas de Trabajo</h4>
+                                    <p class="text-xs font-bold text-slate-500">Ambiente, Arte, Deporte y más</p>
+                                </div>
+                            </div>
+                            <div class="bg-white/85 border border-white p-3 sm:p-4 rounded-2xl flex items-center gap-3 shadow-sm">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0">👥</div>
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800">8 Candidatos</h4>
+                                    <p class="text-xs font-bold text-slate-500">Comprometidos con la comunidad</p>
+                                </div>
+                            </div>
+                            <div class="bg-white/85 border border-white p-3 sm:p-4 rounded-2xl flex items-center gap-3 shadow-sm">
+                                <div class="w-9 h-9 sm:w-10 sm:h-10 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-base sm:text-lg flex-shrink-0">✉️</div>
+                                <div>
+                                    <h4 class="text-xs font-black text-slate-800">¿Tienes una idea?</h4>
+                                    <p class="text-xs font-bold text-slate-500">Escríbenos al correo</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mascot-card rounded-[28px] p-4">
+                            <!-- Desktop only mascot inside card -->
+                            <div class="hidden lg:flex items-center gap-4">
+                                <img src="clipart211898.png" alt="Paper Mario mascota" class="w-20 h-20 object-contain rounded-3xl" />
+                                <div>
+                                    <p class="text-[11px] font-black uppercase tracking-[0.32em] text-slate-500">Mascota de la lista</p>
+                                    <h4 class="text-xl font-black text-slate-900 mt-1">Paper Power</h4>
+                                    <p class="text-xs font-semibold text-slate-600 leading-tight">Nuestra identidad colorida y creativa, inspirada en el estilo Paper Mario.</p>
+                                </div>
+                            </div>
+                            <!-- Mobile version without mascot (already shown above) -->
+                            <div class="lg:hidden text-center">
+                                <p class="text-[11px] font-black uppercase tracking-[0.32em] text-slate-500">Mascota de la lista</p>
+                                <h4 class="text-lg font-black text-slate-900 mt-1">Paper Power</h4>
+                                <p class="text-xs font-semibold text-slate-600 leading-tight">Nuestra identidad colorida y creativa, inspirada en el estilo Paper Mario.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-950/5 rounded-xl p-3 border border-slate-900/5 text-center">
+                            <p class="text-xs font-extrabold text-slate-700">Misión 2026: Una escuela activa para todos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CANDIDATOS -->
+    <section id="candidatos" class="max-w-6xl mx-auto px-4 py-12 sm:py-16 relative z-10">
+        <div class="text-center mb-10 sm:mb-12 animate-fade-in-up">
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-emerald-100 text-emerald-800 border border-emerald-200 shadow-[0_4px_12px_-2px_rgba(16,185,129,0.12)]">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                El equipo que te representa
+            </span>
+            <h3 class="text-3xl sm:text-4xl lg:text-5xl font-black text-slate-900 mt-5 mb-4">Nuestros Candidatos</h3>
+            <p class="text-base sm:text-lg text-slate-700 font-semibold max-w-2xl mx-auto">Conoce a los estudiantes comprometidos que liderarán la lista Mario Party en 2026-2027.</p>
+        </div>
+
+        <!-- Primera fila: 5 candidatos -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 animate-fade-in-up delay-100">
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="paper_mario_joins_smash_ultimate__by_47nano47_dln7j3l.png" alt="Mario" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Elias Coral</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-rose-700 mt-2 bg-rose-100/70 px-2 sm:px-3 py-1 rounded-full border border-rose-200 role-badge">Presidente</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Liderando con visión y compromiso.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="paper_luigi_by_puding64_dgc18uh.png" alt="Luigi" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Juan Francisco</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-blue-700 mt-2 bg-blue-100/70 px-2 sm:px-3 py-1 rounded-full border border-blue-200 role-badge">Vicepresidente</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Apoyo y dedicación constante.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="tex1_192x200_207570b777064c4e_14_by_puding64_dgbvwn2.png" alt="Bowser" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Mauro Macias</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-amber-700 mt-2 bg-amber-100/70 px-2 sm:px-3 py-1 rounded-full border border-amber-200 role-badge">Secretario</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Organizando cada detalle.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="paper_peach_by_puding64_dgc7btz.png" alt="Peach" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Mia Mieles</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-purple-700 mt-2 bg-purple-100/70 px-2 sm:px-3 py-1 rounded-full border border-purple-200 role-badge">Tesorera</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Gestionando responsabilidad.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card col-span-2 sm:col-span-1">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="paper_mario_hd_sprite___yoshi_by_fawfulthegreat64_derzgxf-fullview.png" alt="Yoshi" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Jonas Koreiva</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-indigo-700 mt-2 bg-indigo-100/70 px-2 sm:px-3 py-1 rounded-full border border-indigo-200 role-badge">Jefe de Campaña</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Impulsando la misión.</p>
+            </div>
+        </div>
+
+        <!-- Segunda fila: 3 vocales centrados -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 mt-4 sm:mt-6 max-w-2xl mx-auto animate-fade-in-up delay-200">
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="pngkit_color-splash-png-hd_3638316.png" alt="Toad" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Livio Borro</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-red-700 mt-2 bg-red-100/70 px-2 sm:px-3 py-1 rounded-full border border-red-200 role-badge">Vocal 1</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Voz del equipo.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="image_no_bg.png" alt="Rosalina" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Luciana Guerrero</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-cyan-700 mt-2 bg-cyan-100/70 px-2 sm:px-3 py-1 rounded-full border border-cyan-200 role-badge">Vocal 2</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Representante y apoyo.</p>
+            </div>
+
+            <div class="liquid-glass rounded-2xl p-4 sm:p-6 flex flex-col items-center text-center border-white hover:shadow-lg transition-all duration-300 candidate-card col-span-2 sm:col-span-1">
+                <div class="candidate-avatar mb-3 sm:mb-4 h-24 sm:h-28 lg:h-32">
+                    <img src="super_mario__paper_princess_daisy_by_joshuat1306_dck4dlt-fullview.png" alt="Daisy" class="candidate-img" />
+                </div>
+                <h4 class="text-sm sm:text-base lg:text-lg font-black text-slate-900">Emilia Lopez</h4>
+                <span class="text-[10px] sm:text-xs font-extrabold uppercase tracking-widest text-yellow-700 mt-2 bg-yellow-100/70 px-2 sm:px-3 py-1 rounded-full border border-yellow-200 role-badge">Vocal 3</span>
+                <p class="text-xs sm:text-sm text-slate-600 font-semibold mt-2 sm:mt-3 hidden sm:block">Voz de la comunidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- POR QUÉ ELEGIRNOS -->
+    <section class="max-w-6xl mx-auto px-4 py-6 sm:py-8 relative z-10">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 animate-fade-in-up delay-200">
+            <div class="liquid-glass rounded-3xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-rose-700">Nuestro compromiso</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-900 mt-3 sm:mt-4">Representamos tu voz</h4>
+                <p class="text-sm text-slate-700 font-semibold leading-relaxed mt-2 sm:mt-3">Trabajamos con ideas reales y propuestas concretas para que cada estudiante se sienta escuchado.</p>
+            </div>
+            <div class="liquid-glass rounded-3xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-blue-700">Nuestra energía</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-900 mt-3 sm:mt-4">Activamos la escuela</h4>
+                <p class="text-sm text-slate-700 font-semibold leading-relaxed mt-2 sm:mt-3">Queremos recreos activos, espacios seguros y actividades que motiven a todos a participar.</p>
+            </div>
+            <div class="liquid-glass rounded-3xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700">Nuestra propuesta</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-900 mt-3 sm:mt-4">Ideas para todos</h4>
+                <p class="text-sm text-slate-700 font-semibold leading-relaxed mt-2 sm:mt-3">Sumamos creatividad y compromiso para que el colegio sea más divertido, inclusivo y motivador.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROPUESTAS -->
+    <section id="propuestas" class="max-w-6xl mx-auto px-4 py-10 sm:py-12 relative z-10">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-8 sm:mb-12 gap-3 animate-fade-in-up delay-200">
+            <div>
+                <span class="text-xs font-extrabold tracking-widest text-indigo-700 uppercase">Plan de Gobierno</span>
+                <h3 class="text-2xl sm:text-3xl md:text-4xl font-black text-slate-800 tracking-tight mt-1">
+                    Ejes de Trabajo de la Lista
+                </h3>
+            </div>
+            <p class="text-slate-700 text-sm max-w-xs font-bold leading-relaxed">
+                Nuestras metas se enfocan en crear un ambiente equilibrado donde el aprendizaje y la diversión vayan de la mano.
+            </p>
+        </div>
+
+        <!-- Filtros con scroll horizontal en mobile -->
+        <div class="filter-scroll flex gap-2 mb-6 sm:mb-8 pb-1 animate-fade-in-up delay-300">
+            <button type="button" data-filter="all" class="filter-button active">Todas</button>
+            <button type="button" data-filter="Ambiente" class="filter-button">Ambiente</button>
+            <button type="button" data-filter="Arte" class="filter-button">Arte</button>
+            <button type="button" data-filter="Deporte" class="filter-button">Deporte</button>
+            <button type="button" data-filter="Coordinación" class="filter-button">Coordinación</button>
+            <button type="button" data-filter="Salud" class="filter-button">Salud</button>
+            <button type="button" data-filter="Educación" class="filter-button">Educación</button>
+            <button type="button" data-filter="Campaña" class="filter-button">Campaña</button>
+        </div>
+
+        <div id="grid-propuestas" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 animate-fade-in-up delay-300">
+
+            <!-- Ambiente -->
+            <div class="liquid-glass area-ambiente rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Ambiente">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-emerald-700">Ambiente</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas ambientales</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Campaña de reciclaje</h5><p>Implementar una campaña permanente de reciclaje en toda la institución con recipientes diferenciados para papel, plástico y orgánicos, charlas de sensibilización y jornadas de recolección por cursos.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Concurso de aula limpia</h5><p>Diseñar una rúbrica de evaluación para calificar limpieza, orden y cuidado del aula; realizar inspecciones y premiar al curso ganador cada trimestre con una calificación inversa iniciando en 100 puntos.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Planta mascota por curso</h5><p>Cada curso adoptará una planta que deberá cuidar durante el año lectivo, evaluándose su estado de conservación, crecimiento y creatividad en la presentación de su maceta.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Incrementar y clasificar tachos de basura</h5><p>Gestionar la instalación de más recipientes para residuos en áreas estratégicas del colegio y clasificarlos según el tipo de desecho.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+1)</button>
+            </div>
+
+            <!-- Arte -->
+            <div class="liquid-glass area-arte rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Arte">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-fuchsia-700">Arte</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas artísticas</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Concurso de decoración de macetas</h5><p>Durante las horas de tutoría los estudiantes decorarán macetas; se evaluará creatividad y presentación, y el primer lugar recibirá una pizza artesanal.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Competencia de monólogos</h5><p>Organizar una competencia donde los estudiantes preparen y presenten monólogos sobre temas de interés social, cultural o educativo.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Galería fotográfica de talentos estudiantiles</h5><p>Crear una exposición permanente o temporal con fotografías de estudiantes destacando arte, deporte, ciencia y cultura.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Casa abierta cultural por regiones</h5><p>Cada subnivel representará una región del país, exponiendo aspectos culturales, gastronómicos e históricos.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Semana cultural internacional</h5><p>Cada paralelo representará una región o ciudad y participará en una feria cultural evaluada mediante una rúbrica del consejo estudiantil.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Pintacaritas en la final de las olimpiadas</h5><p>Realizar una actividad de animación durante las finales deportivas con pintura facial en los colores de los equipos participantes.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+3)</button>
+            </div>
+
+            <!-- Deporte -->
+            <div class="liquid-glass area-deporte rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Deporte">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-cyan-700">Deporte</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas deportivas</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Copa Clara Barton</h5><p>Entregar una copa rotativa a los ganadores de las olimpiadas en los tres deportes principales, que regresará a competencia cada año.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Mural deportivo institucional</h5><p>Diseñar y elaborar un mural que destaque a los ganadores de la Copa Clara Barton.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Entrenamiento para representantes del colegio</h5><p>Coordinar entrenamientos especializados para estudiantes que participarán en competencias intercolegiales, iniciando preparación un mes antes.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Entrenamientos vespertinos</h5><p>Establecer horarios de entrenamiento en la tarde entre 2:00 y 3:00 p.m. para fortalecer el rendimiento deportivo.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Talleres con jugadores profesionales</h5><p>Invitar a deportistas profesionales para dar charlas sobre su carrera y cómo llegaron a ese punto.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Narrador deportivo estudiantil</h5><p>Seleccionar estudiantes para narrar partidos y eventos deportivos escolares, fomentando habilidades comunicativas.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Mejoramiento del arbitraje</h5><p>Encontrar un árbitro o capacitar a estudiantes/docentes para mejorar la jugabilidad en las olimpiadas.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Fotógrafo oficial de olimpiadas</h5><p>Designar estudiantes responsables de documentar eventos deportivos con fotografías para redes sociales y galerías.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+5)</button>
+            </div>
+
+            <!-- Coordinación -->
+            <div class="liquid-glass area-coordinacion rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Coordinación">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-slate-700">Coordinación</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas de gestión</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Reuniones mensuales con autoridades</h5><p>Mantener reuniones periódicas entre el consejo estudiantil y las autoridades para evaluar avances, necesidades y propuestas.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Encuestas trimestrales de valoración</h5><p>Aplicar encuestas a estudiantes para recopilar opiniones sobre actividades, servicios y necesidades institucionales.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Mejoramiento del buzón estudiantil</h5><p>Renovar el buzón de sugerencias para que los estudiantes presenten ideas, inquietudes y propuestas de mejora.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Cartelera mensual de eventos</h5><p>Elaborar una cartelera visible con actividades, fechas importantes y eventos institucionales, actualizada mensualmente.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Construcción o remodelación de áreas de descanso</h5><p>Adecuar dos espacios de descanso en la salida de estudiantes con estructuras metálicas, techado y bancos, financiados por ventas de bolos y postres.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+2)</button>
+            </div>
+
+            <!-- Salud -->
+            <div class="liquid-glass area-salud rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Salud">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-rose-700">Salud</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas de bienestar</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Campaña de alimentación saludable</h5><p>Realizar charlas sobre nutrición, deporte y hábitos saludables durante tutorías o recreos, con material presentado por el consejo estudiantil.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Taller de primeros auxilios e higiene</h5><p>Coordinar con Cruz Roja talleres prácticos de primeros auxilios e higiene para estudiantes de básica y bachillerato.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Transformación del bar escolar</h5><p>Promover alimentos más nutritivos en el bar escolar con el apoyo de directivos, padres y profesionales en nutrición.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Campañas de salud mental</h5><p>Implementar actividades de sensibilización sobre bienestar emocional, manejo del estrés y apoyo entre compañeros.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+1)</button>
+            </div>
+
+            <!-- Educación -->
+            <div class="liquid-glass area-educacion rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300" data-area="Educación">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-indigo-700">Educación</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas educativas</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Refuerzo de estudio práctico</h5><p>Implementar actividades y talleres prácticos donde los estudiantes aprendan mediante experimentación, especialmente en ciencias.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Club de Matemáticas</h5><p>Crear espacios extracurriculares para fortalecer habilidades matemáticas mediante retos, juegos y competencias.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Espacios de conversación en inglés</h5><p>Establecer actividades en las que los estudiantes practiquen exclusivamente inglés en situaciones cotidianas.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Club de comunicación aplicada</h5><p>Desarrollar habilidades sociales, liderazgo y comunicación efectiva mediante actividades prácticas y simulaciones.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Charlas sobre relaciones saludables</h5><p>Organizar charlas sobre bienestar emocional, relaciones sanas y educación sexual responsable para estudiantes de secundaria.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+2)</button>
+            </div>
+
+            <!-- Campaña -->
+            <div class="liquid-glass area-campana rounded-2xl p-5 sm:p-6 border-white shadow-sm hover:shadow-md transition-shadow duration-300 sm:col-span-2 lg:col-span-1" data-area="Campaña">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-sky-700">Campaña</span>
+                <h4 class="text-xl sm:text-2xl font-black text-slate-950 mt-3 sm:mt-4 mb-4 sm:mb-5">Propuestas de campaña</h4>
+                <div class="space-y-3 sm:space-y-4">
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Búsqueda de tickets dorados</h5><p>Esconder tickets dorados en distintos lugares del colegio para que los estudiantes los canjeen por premios.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Muro de deseos estudiantiles</h5><p>Crear un espacio donde los estudiantes escriban metas, sueños y propuestas para la comunidad educativa.</p></div>
+                    <div class="proposal-card"><h5 class="font-bold text-slate-900">Personajes de Mario durante el recreo</h5><p>Integrantes del consejo se disfrazarán de personajes de Mario Bros para interactuar con los estudiantes y promocionar actividades.</p></div>
+                    <div class="proposal-extra hidden space-y-3 sm:space-y-4">
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Pintacaritas y entrega de stickers</h5><p>Realizar actividades recreativas durante los recreos para promocionar la campaña y generar participación.</p></div>
+                        <div class="proposal-card"><h5 class="font-bold text-slate-900">Gabinete de preguntas</h5><p>Instalar un espacio donde los estudiantes hagan preguntas sobre las propuestas y reciban respuestas claras del equipo.</p></div>
+                    </div>
+                </div>
+                <button type="button" class="more-button" onclick="toggleMasPropuestas(this)">Ver más (+2)</button>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACTO -->
+    <section id="contacto" class="max-w-4xl mx-auto px-4 py-12 sm:py-16 mb-16 sm:mb-20 relative z-10">
+        <div class="liquid-glass rounded-3xl p-7 sm:p-10 border-white shadow-[0_20px_50px_-15px_rgba(100,116,139,0.2)] hover:shadow-[0_25px_60px_-15px_rgba(100,116,139,0.25)] relative overflow-hidden text-center">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-rose-100 via-amber-100 to-sky-100 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-5 sm:mb-6 shadow-sm border border-white">
+                ✉️
+            </div>
+
+            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-extrabold bg-rose-100 text-rose-700 border border-rose-200 mb-4">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+                Estamos aquí para escucharte
+            </span>
+
+            <h3 class="text-2xl sm:text-3xl lg:text-4xl font-black text-slate-900 mt-4 mb-4">Contáctanos</h3>
+
+            <p class="text-slate-600 font-semibold text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-7 sm:mb-8">
+                ¿Tienes una idea, sugerencia o propuesta para mejorar nuestra escuela? Preséntala directamente a nuestro equipo. Tu opinión construye el cambio.
+            </p>
+
+            <div class="inline-flex flex-col sm:flex-row items-center gap-4 bg-white/90 border border-slate-200 rounded-2xl px-5 sm:px-6 py-4 sm:py-5 shadow-sm w-full sm:w-auto">
+                <div class="w-11 h-11 sm:w-12 sm:h-12 bg-indigo-100 text-indigo-600 rounded-xl flex items-center justify-center text-lg sm:text-xl flex-shrink-0">
+                    📬
+                </div>
+                <div class="text-center sm:text-left">
+                    <p class="text-xs font-extrabold uppercase tracking-widest text-slate-500 mb-1">Presenta tus ideas al correo</p>
+                    <a href="mailto:jackbill17222116@gmail.com" class="text-base sm:text-lg lg:text-xl font-black text-slate-900 hover:text-rose-600 transition-colors duration-300 break-all">
+                        jackbill17222116@gmail.com
+                    </a>
+                </div>
+            </div>
+
+            <p class="text-xs font-bold text-slate-400 mt-5 sm:mt-6">Respondemos a la brevedad. ¡Cada voz importa!</p>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="mt-auto bg-white border-t border-slate-200 py-10 sm:py-12 relative z-10">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-5 sm:gap-6">
+            <div class="text-center md:text-left space-y-2">
+                <h4 class="text-base sm:text-lg font-black text-slate-800 tracking-wide">MARIO PARTY 2026-2027</h4>
+                <p class="text-xs sm:text-sm text-slate-600 font-bold mt-1">Por una representación estudiantil equilibrada, moderna e integradora.</p>
+                <p class="text-xs text-slate-500">Contacto: <a href="mailto:jackbill17222116@gmail.com" class="text-slate-700 underline">jackbill17222116@gmail.com</a></p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-8 h-8 bg-slate-100 border-2 border-slate-300 rounded-lg flex items-center justify-center text-xs font-extrabold text-slate-700">M</div>
+                <div class="w-8 h-8 bg-slate-100 border-2 border-slate-300 rounded-lg flex items-center justify-center text-xs font-extrabold text-slate-700">P</div>
+                <div class="w-8 h-8 bg-amber-100 border-2 border-amber-300 rounded-lg flex items-center justify-center text-xs font-extrabold text-amber-800">★</div>
+            </div>
+        </div>
+        <div class="border-t border-slate-200 max-w-6xl mx-auto mt-6 sm:mt-8 pt-4 text-center text-[10px] text-slate-500 font-bold tracking-wider uppercase">
+            © 2026 LISTA MARIO PARTY. TRABAJO DEMOCRÁTICO ESCOLAR.
+        </div>
+    </footer>
+
+    <script defer>
+        // Lucide icons
+        let iconosInicializados = false;
+        function inicializarIconos() {
+            if (!iconosInicializados && window.lucide) {
+                lucide.createIcons();
+                iconosInicializados = true;
+            }
+        }
+
+        // Hamburger menu
+        const menuToggle = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const hamLines = menuToggle.querySelectorAll('.ham-line');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('open');
+            // Animate hamburger to X
+            if (isOpen) {
+                hamLines[0].style.transform = 'translateY(8px) rotate(45deg)';
+                hamLines[1].style.opacity = '0';
+                hamLines[2].style.transform = 'translateY(-8px) rotate(-45deg)';
+            } else {
+                hamLines[0].style.transform = '';
+                hamLines[1].style.opacity = '';
+                hamLines[2].style.transform = '';
+            }
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                hamLines[0].style.transform = '';
+                hamLines[1].style.opacity = '';
+                hamLines[2].style.transform = '';
+            });
+        });
+
+        // Proposals filter
+        function inicializarFiltrosPropuestas() {
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.addEventListener('click', () => aplicarFiltroPropuestas(btn.dataset.filter, btn));
+            });
+        }
+
+        function aplicarFiltroPropuestas(area, clickedBtn) {
+            document.querySelectorAll('#grid-propuestas > div[data-area]').forEach(card => {
+                card.style.display = area === 'all' || card.dataset.area === area ? '' : 'none';
+            });
+            document.querySelectorAll('[data-filter]').forEach(btn => {
+                btn.classList.toggle('active', btn === clickedBtn);
+            });
+        }
+
+        function toggleMasPropuestas(button) {
+            const card = button.closest('[data-area]');
+            if (!card) return;
+            const extra = card.querySelector('.proposal-extra');
+            if (!extra) return;
+            const hidden = extra.classList.toggle('hidden');
+            button.classList.toggle('bg-slate-900', !hidden);
+            button.classList.toggle('text-white', !hidden);
+            actualizarBotonesMas();
+        }
+
+        function actualizarBotonesMas() {
+            document.querySelectorAll('[data-area]').forEach(card => {
+                const button = card.querySelector('.more-button');
+                const extra = card.querySelector('.proposal-extra');
+                if (!button || !extra) return;
+                const count = extra.querySelectorAll('.proposal-card').length;
+                button.innerText = extra.classList.contains('hidden')
+                    ? (count ? `Ver más (+${count})` : 'Ver más...')
+                    : 'Ver menos...';
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                inicializarIconos();
+                inicializarFiltrosPropuestas();
+                actualizarBotonesMas();
+            });
+        } else {
+            inicializarIconos();
+            inicializarFiltrosPropuestas();
+            actualizarBotonesMas();
+        }
+    </script>
+</body>
+</html>
